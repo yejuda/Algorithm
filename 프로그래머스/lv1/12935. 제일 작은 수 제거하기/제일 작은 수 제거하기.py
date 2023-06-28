@@ -1,9 +1,8 @@
 def solution(arr):
     
-    if len(arr) > 1:
-        arr.remove(min(arr))
+    if len(arr) == 1:
+        return [-1]
     else:
-        arr.remove(arr[0])
-        arr.append(-1)
-        
+        arr.remove(min(arr))
+    
     return arr
