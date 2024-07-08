@@ -1,0 +1,5 @@
+print("|\_/|", end='\n')
+print("|q p|   /}", end='\n')
+print('( 0 )"""\\', end='\n')
+print('|"^"`    |', end='\n')
+print('||_/=\\\\__|', end='\n')
