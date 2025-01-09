@@ -1,22 +1,29 @@
-n = int(input())
-cnt = 0
+class GoodWordChecker:
+    def __init__(self):
+        self.stack = []
 
-for _ in range(n):
-    s = input() # 문자 입력 받기
-    stack = []  # 매 줄마다 스택이 초기화
+    def process(self, s):
+        self.stack = []  # 매 줄마다 스택 초기화
+        
+        for i in s:
+            if not self.stack:
+                self.stack.append(i)
+            elif self.stack[-1] == i:
+                self.stack.pop()
+            else:
+                self.stack.append(i)
+        return not self.stack  # 스택이 비어 있으면 좋은 문자(True = not False)
     
-    for i in s:
-        if not stack:  # 스택이 비어있다면 append
-            stack.append(i)
-        
-        # 그게 아니라, 스택의 최상단 문자와 현재 읽고 있는 문자가 같다면
-        elif stack[-1] == i:  
-            stack.pop()
-        
-        else:
-            stack.append(i)
-        
-    if not stack:
-        cnt += 1
-        
-print(cnt)
+    
+if __name__ == '__main__':
+    n = int(input())
+    cnt = 0    
+    # 클래스 인스턴스 생성
+    checker = GoodWordChecker()
+
+    for _ in range(n):
+        s = input()
+        if checker.process(s):  # 스택이 비어있으면 (True 이면)
+            cnt += 1
+
+    print(cnt)
