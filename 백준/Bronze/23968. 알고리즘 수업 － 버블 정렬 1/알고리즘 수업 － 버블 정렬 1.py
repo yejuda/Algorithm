@@ -1,24 +1,29 @@
-import sys
-
-input = sys.stdin.readline
-
+# 배열 크기, 교환 횟수 입력
 n, k = map(int, input().split())
+# 배열 입력
 a = list(map(int, input().split()))
-
-# 현재 교환 횟수
+# 교환횟수 count 변수
 cnt = 0
 
-for i in range(n):  # 패스 수: n-1번
-    # 각 패스에서 비교 범위
-    for j in range(n-1-i):   # (n이 6이라는 가정하에, 0부터 5까지 / 0부터 4까지)
-        if a[j] > a[j+1]:  
-            a[j], a[j+1] = a[j+1], a[j]  # 교환
+## 버블 정렬이니까,, 이중 반복문 -> 한번 반복해서는 정렬이 안되기 때문!
+## 맨 오른쪽이 점차 정렬이 되어간다.
+# 배열 크기 만큼 반복
+for i in range(n):
+    # 처음 ~ 오른쪽에서 하나씩 줄여나가면서 반복
+    for j in range(n-1-i):
+        # 만약에, 현재 원소가 다음 원소보다 크면 
+        if a[j] > a[j+1]:
+            # swap
+            a[j], a[j+1] = a[j+1], a[j]
+            # 교환 횟수 늘리기
             cnt += 1
 
+            # 만약에, 목표 교환횟수와 현재 교환횟수가 같으면
             if cnt == k:
+                # 현재원소, 그 다음 원소 출력
                 print(a[j], a[j+1])
+                # 코드 종료
                 exit()
 
-# k번째 교환에 도달하지 못한 경우
+# 정렬을 다 했는데, 코드 종료가 안됐으면(교환횟수가 k보다 작으면 -1 출력)
 print(-1)
-    
