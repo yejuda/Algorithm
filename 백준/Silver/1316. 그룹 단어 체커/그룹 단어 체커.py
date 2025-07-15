@@ -1,33 +1,28 @@
-# 그룹단어 특징: 떨어져서 나오지 않는다.
+# 같은 문자가 나온다면 그것은 하나로 취급
+# 이전 문자가 다르고 set에 들어가있지 않으면 새로운 문자 ->set에 추가
+
 n = int(input())
+cnt = 0    # 그룹단어 카운트
 
-word_list = [input() for _ in range(n)]
+for _ in range(n):
+    stored = set()  # 나온 단어 저장 변수
+    is_grouped = True  # 그룹단어 확인변수
+    prev = ''  # 이전 단어 확인 변수
 
-# 그룹단어 카운트
-total_group_words = 0
+    word = input()
 
-for word in word_list:
-    seen_latters = set()
-    is_group_word = True  # 이 단어가 그룹단어인지 판별할 플래그
-
-    prev_char = ''  # 이전 글자를 저장할 변수
-
-    for char in word:
-        # 이전 글자와 같으면 연속된 글자이므로 넘어가기
-        if prev_char == char:
+    for w in word:
+        # 그룹단어가 아닌 조건
+        if w != prev and w in stored:
+            is_grouped = False
+            break
+        # 이전 문자와 현재 문자가 같으면 pass
+        if w == prev:
             pass
-        # 이전 글자와 다르면, 새로운 글자 등장
-        else:
-            # 이미 나왔던 글자가 다시 나왔으므로 그룹단어 아님
-            if char in seen_latters:
-                is_group_word = False
-                break  # 해당 단어 검사 중단
-            # 이전글자와 다른데 나왔던 글자 아님
-            else:
-                seen_latters.add(char)  # 처음 나오는 글자이므로 seen_latters에 추가
-        prev_char = char  # 현재 글자를 이전 글자로 업데이트
+        # 각 문자를 stored에 추가하고 prev를 업데이트
+        stored.add(w)
+        prev = w
 
-    if is_group_word:
-        total_group_words +=1 
-
-print(total_group_words)
+    if is_grouped == True:
+        cnt += 1
+print(cnt)
