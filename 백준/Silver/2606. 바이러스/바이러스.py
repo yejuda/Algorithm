@@ -1,72 +1,38 @@
-# 1번 컴퓨터를 통해 웜 바이러스에 걸리게 되는 컴퓨터의 수를 출력
-# '서로 연결되어 있는' -> 양방향 연결을 의미
 
-## DFS(재귀)
-n = int(input())  # 노드 수
-m = int(input())  # 간선 수
 
-# 방문 확인 변수
-visited = [False] * (n+1)
-# 노드 정보(그래프 구조)
-# 노드 개수만큼 생성되고 그 안에 노드와 연결 되어 있는 정보가 들어간다
+# 컴퓨터 수(노드 수)
+n = int(input())
+# 간선 수
+v = int(input())
+
+# 방문 확인 변수 초기화(DFS)
+visited = [False]*(n+1)
+
+## 데이터 입력 받기
+# 빈 리스트 초기화
 graph = [[] for _ in range(n+1)]
 
-# 1번컴퓨터와 연결되어 있는 컴퓨터 개수 세기
-cnt = 0
-
-# 노드 정보 입력해주기 
-for _ in range(m): # 간선 수만큼
+for _ in range(v):  # 간선 수만큼 반복
     a, b = map(int, input().split())
     graph[a].append(b)
-    graph[b].append(a)   # 양방향 연결이기 때문에!
+    graph[b].append(a)  # 양방향일 경우 사용
 
 
+# DFS 함수 생성
+def dfs(val):
+    # 현재 노드 방문처리
+    visited[val] = True
 
-# dfs 함수 생성
-def dfs(node):
-    # 전역 변수 선언
-    global cnt
-
-    # 현재 노드 방문 처리
-    visited[node] = True
-
-    for neighbor in graph[node]:  # 그래프를 순회하기(현재 노드와 연결되어 있는 노드들을 순회해야 함)
-        if not visited[neighbor]:     # 만약 아직 방문하지 않은 노드라면
-            dfs(neighbor)  # 재귀적으로 방문 처리
-            cnt += 1
-
-    return cnt
+    # 현재 노드(val)와 연결되어 있는 다른 노드 재귀적으로 방문
+    for i in graph[val]:
+        # 만약, 방문하지 않았다면(visited에 해당 노드가 없다면) / False이면,
+        if not visited[i]:
+            # 재귀함수 사용해서 방문처리
+            dfs(i)
 
 
-## BFS(deque)
-from collections import deque
+dfs(1)
 
-# bfs
-def bfs(start):
-    # 전역 변수 선언
-    global cnt
+# 실제로 방문한 노드 수(True) 출력
+print(visited.count(True)-1)
 
-    # 큐에 첫 노드 넣기
-    queue = deque([start])
-    # 첫노드 방문처리
-    visited[start] = True
-
-    # 큐가 빌 때까지 반복
-    while queue:
-        # 노드 빼서 탐색
-        node = queue.popleft()
-
-        for neighbor in graph[node]:
-            if not visited[neighbor]:
-                # 방문처리
-                visited[neighbor] = True
-                # 해당 노드 다시 큐에 넣기(이후 해당 노드와 연결되어 있는 노드들을 탐색하기 위해서)
-                queue.append(neighbor)
-                cnt += 1
-    return cnt
-
-
-# 1번 컴퓨터와 연결되어 있는 컴퓨터 수를 알기 위해서는 
-# 1번 노드부터 시작했을 때 방문하는 컴퓨터 개수 
-print(dfs(1))
-print(bfs(1))
