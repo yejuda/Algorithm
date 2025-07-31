@@ -2,13 +2,25 @@ n = int(input())
 m = int(input())
 s = input()
 
-pattern = 'IOI'+ ('OI' * (n-1))
+target_n = n
 
-cnt = 0
+ans = 0
+count_o = 0
+i = 0
 
-# 문자열 슬라이싱!!
-for i in range(len(s) - len(pattern) + 1):
-    if s[i:i+len(pattern)] == pattern:
-        cnt += 1
+while i < m - 1:
+    if s[i] == 'I' and s[i+1] == 'O':
+        if i + 2 < m and s[i+2] == 'I':
+            count_o += 1
+            if count_o == target_n:
+                ans += 1
+                count_o -= 1
+            i += 2
+        else:
+            count_o = 0
+            i += 1
+    else:
+        count_o = 0
+        i += 1
 
-print(cnt)
+print(ans)
